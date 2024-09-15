@@ -1,5 +1,5 @@
 pipeline {
-    agent none // No global agent; agents are defined per stage
+    agent any // No global agent; agents are defined per stage
 
     stages {
         stage('Checkout') {
@@ -57,7 +57,6 @@ pipeline {
     post {
     always {
         // Specify an agent to perform post actions
-        agent any
         steps {
             cleanWs()
         }
