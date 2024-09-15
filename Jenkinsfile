@@ -1,5 +1,5 @@
 pipeline {
-    agent any // No global agent; agents are defined per stage
+    agent none // No global agent; agents are defined per stage
 
     stages {
         stage('Checkout') {
