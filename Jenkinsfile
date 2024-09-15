@@ -1,12 +1,8 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:20-alpine' // Use the Node.js 20 image
-        }
-    }
+    agent any
 
     environment {
-        NPM_CONFIG_CACHE = "${WORKSPACE}/.npm" // Set npm cache directory to a writable location
+        NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
     }
 
     stages {
@@ -32,13 +28,15 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-react-app:${env.BUILD_NUMBER} .'
+                // Use double quotes for variable interpolation
+                sh "docker build -t my-react-app:${env.BUILD_NUMBER} ."
             }
         }
         stage('Deploy Application') {
             steps {
                 sh 'docker rm -f my-react-app-container || true'
-                sh 'docker run -d -p 3000:3000 --name my-react-app-container my-react-app:${env.BUILD_NUMBER}'
+                // Use double quotes here as well
+                sh "docker run -d -p 3000:3000 --name my-react-app-container my-react-app:${env.BUILD_NUMBER}"
             }
         }
     }
