@@ -15,8 +15,12 @@ RUN apk update && \
 # Set the working directory
 WORKDIR /app
 
-# Copy your application code
-COPY . .
+# Set the working directory
+WORKDIR /app
+
+# Copy your application code and set the ownership to 'node'
+COPY --chown=node:node . .
+
 
 # Install application dependencies
 RUN npm install
