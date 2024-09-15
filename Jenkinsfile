@@ -56,7 +56,7 @@ pipeline {
 
     post {
     always {
-        node('agent1') {
+        node('master') {
             cleanWs()
 
         }
