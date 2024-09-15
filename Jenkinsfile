@@ -57,9 +57,8 @@ pipeline {
     post {
     always {
         // Specify an agent to perform post actions
-        steps {
             cleanWs()
-        }
+        
     }
     }
 }
