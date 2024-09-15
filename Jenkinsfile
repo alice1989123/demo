@@ -54,11 +54,13 @@ pipeline {
         }
     }
 
-     post {
-        always {
-            node(any) {
-                cleanWs()
-            }
+    post {
+    always {
+        // Specify an agent to perform post actions
+        agent any
+        steps {
+            cleanWs()
         }
+    }
     }
 }
