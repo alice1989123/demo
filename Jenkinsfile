@@ -1,6 +1,9 @@
 pipeline {
-    agent any
-
+    agent {
+        docker {
+            image 'node:20-alpine' // Use the Node.js 20 image
+        }
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -24,13 +27,13 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-react-app .'
+                sh 'docker build -t my-react-app:${env.BUILD_NUMBER} .'
             }
         }
         stage('Deploy Application') {
             steps {
                 sh 'docker rm -f my-react-app-container || true'
-                sh 'docker run -d -p 3000:3000 --name my-react-app-container my-react-app'
+                sh 'docker run -d -p 3000:3000 --name my-react-app-container my-react-app:${env.BUILD_NUMBER}'
             }
         }
     }
