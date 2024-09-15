@@ -1,51 +1,39 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = "jenkins-node-docker"
-    }
-
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-
-        stage('Build Docker Image') {
+        stage('Install Dependencies') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE}:${env.BUILD_NUMBER} ."
+                sh 'npm install'
             }
         }
-
-        stage('Use Built Docker Image') {
-            agent {
-                docker {
-                    image "${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-                    args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-                }
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'
             }
-            stages {
-                stage('Install Dependencies') {
-                    steps {
-                        sh 'npm install'
-                    }
-                }
-                stage('Run Tests') {
-                    steps {
-                        sh 'npm test'
-                    }
-                }
-                stage('Build Application') {
-                    steps {
-                        sh 'npm run build'
-                    }
-                }
-                // Additional stages as needed
+        }
+        stage('Build Application') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t my-react-app .'
+            }
+        }
+        stage('Deploy Application') {
+            steps {
+                sh 'docker rm -f my-react-app-container || true'
+                sh 'docker run -d -p 3000:3000 --name my-react-app-container my-react-app'
             }
         }
     }
-
     post {
         always {
             cleanWs()
