@@ -4,6 +4,11 @@ pipeline {
             image 'node:20-alpine' // Use the Node.js 20 image
         }
     }
+
+    environment {
+        NPM_CONFIG_CACHE = "${WORKSPACE}/.npm" // Set npm cache directory to a writable location
+    }
+
     stages {
         stage('Checkout') {
             steps {
