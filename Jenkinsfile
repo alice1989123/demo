@@ -56,9 +56,7 @@ pipeline {
 
      post {
         always {
-            // Explicitly allocate an agent for post actions
-            agent any
-            steps {
+            node {
                 cleanWs()
             }
         }
