@@ -1,0 +1,14 @@
+version: '3.8'  # Specify the version of the Compose file format
+
+services:
+  react-app:
+    build:
+      context: .  # Use the current directory as the build context
+      dockerfile: Dockerfile  # Use the Dockerfile to build the image
+    ports:
+      - '3000:3000'  # Map port 3000 on the host to port 3000 in the container
+    environment:
+      - NODE_ENV=development  # Set environment variable
+    volumes:
+      - .:/app  # Mount the current directory to /app in the container
+      - /app/node_modules  # Prevents mounting of node_modules from the host
