@@ -54,9 +54,13 @@ pipeline {
         }
     }
 
-    post {
+     post {
         always {
-            cleanWs()
+            // Explicitly allocate an agent for post actions
+            agent any
+            steps {
+                cleanWs()
+            }
         }
     }
 }
