@@ -3,7 +3,7 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            agent { label 'any' } // Use any available agent
+            agent any
             steps {
                 checkout scm
             }
@@ -39,14 +39,14 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            agent { label 'any' } // Run on Jenkins node where Docker is installed
+            agent any // Run on Jenkins node where Docker is installed
             steps {
                 sh "docker build -t my-react-app:${env.BUILD_NUMBER} ."
             }
         }
 
         stage('Deploy Application') {
-            agent { label 'any' }
+            agent any
             steps {
                 sh 'docker rm -f my-react-app-container || true'
                 sh "docker run -d -p 3000:3000 --name my-react-app-container my-react-app:${env.BUILD_NUMBER}"
